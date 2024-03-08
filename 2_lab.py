@@ -1,13 +1,33 @@
 import unittest
-def find_three_numbers(arr, P):
-    num_set = set(arr)
-    for i in range(len(arr)):
-        for j in range(i + 1, len(arr)):
-            required = P - (arr[i] + arr[j])
-            if required in num_set and required != arr[i] and required != arr[j]:
-                return True
+
+def binary_search(arr, left, right, target):
+    while left <= right:
+        mid = left + (right - left) // 2
+        if arr[mid] == target:
+            return True
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
     return False
 
+def find_three_numbers(arr, P):
+    arr.sort()
+    n = len(arr)
+    for i in range(n - 2):
+        left = i + 1
+        right = n - 1
+        while left < right:
+            current_sum = arr[i] + arr[left] + arr[right]
+            if current_sum == P:
+                return True
+            elif current_sum < P:
+                if binary_search(arr, left, right, P - arr[i] - arr[left]):
+                    return True
+                left += 1
+            else:
+                right -= 1
+    return False
 
 class TestFindThreeNumbers(unittest.TestCase):
 
@@ -26,7 +46,5 @@ class TestFindThreeNumbers(unittest.TestCase):
         P = 600006
         self.assertTrue(find_three_numbers(arr, P))
 
-
 if __name__ == '__main__':
     unittest.main()
-
