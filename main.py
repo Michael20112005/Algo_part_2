@@ -1,23 +1,23 @@
-class BinaryTree:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+import unittest
 
-def branchSums(root):
-    if root is None:
-        return 0
+class TestBranchSums(unittest.TestCase):
+    def test_branch_sums_empty_tree(self):
+        self.assertEqual(branchSums(None), 0)
 
-    if root.left is not None and root.left.left is None and root.left.right is None:
-        return root.left.value + branchSums(root.right)
-    else:
-        return branchSums(root.left) + branchSums(root.right)
+    def test_branch_sums_single_node(self):
+        root = BinaryTree(3)
+        self.assertEqual(branchSums(root), 3)
 
+    def test_branch_sums_complex_tree(self):
+        root = BinaryTree(5)
+        root.left = BinaryTree(2)
+        root.right = BinaryTree(7)
+        root.left.left = BinaryTree(1)
+        root.left.right = BinaryTree(3)
+        root.right.left = BinaryTree(6)
+        root.right.right = BinaryTree(8)
 
-root = BinaryTree(3)
-root.left = BinaryTree(9)
-root.right = BinaryTree(20)
-root.right.left = BinaryTree(15)
-root.right.right = BinaryTree(7)
+        self.assertEqual(branchSums(root), 56)
 
-print(branchSums(root))
+if __name__ == '__main__':
+    unittest.main()
